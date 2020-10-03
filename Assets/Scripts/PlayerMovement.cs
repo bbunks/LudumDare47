@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     public Transform cam;
     public GameObject gfx;
     public Animator animator;
+    public PlayerCollision collision;
 
     public float acceleration = 0.1f, speed = 6f, turnSmooth = 0.05f, jumpHeight = 1.0f, sprintIncrease = 1.5f;
     private float turnSmoothVelocity, timeSinceLastUse = 0, sprintMultiplier = 1f;
@@ -81,6 +82,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetButton("Jump") && controller.isGrounded)
         {
             playerVelocity.y = Mathf.Sqrt(jumpHeight * -2.0f * Physics.gravity.y);
+            animator.SetTrigger("Jump");
         }
 
         controller.Move(playerVelocity * Time.deltaTime);

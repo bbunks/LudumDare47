@@ -7,7 +7,7 @@ public class PlayerCollision : MonoBehaviour
 {
     public SphereCollider topCollider, bottomCollider, frontCollider, backCollider, leftCollider, rightCollider;
     public CharacterController controller;
-    Collider[] frontCollision, backCollision, leftCollision, rightCollision, sideCollision, topCollision, bottomCollision;
+    Collider[] frontCollision, backCollision, leftCollision, rightCollision, sideCollision, topCollision, bottomCollision, collisions;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +33,7 @@ public class PlayerCollision : MonoBehaviour
         topCollision = Physics.OverlapSphere(topCollider.transform.position, topCollider.radius, 1 << 8);
         bottomCollision = Physics.OverlapSphere(bottomCollider.transform.position, bottomCollider.radius, 1 << 8);
         sideCollision = frontCollision.Concat(backCollision).Concat(leftCollision).Concat(rightCollision).Distinct().ToArray();
+        collisions = sideCollision.Concat(topCollision).Concat(bottomCollision).Distinct().ToArray();
     }
 
     public Collider[] getFrontCollisions()
@@ -62,5 +63,9 @@ public class PlayerCollision : MonoBehaviour
     public Collider[] getBottomCollisions()
     {
         return bottomCollision;
+    }
+    public Collider[] getCollisions()
+    {
+        return collisions;
     }
 }
