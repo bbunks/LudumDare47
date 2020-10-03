@@ -8,30 +8,21 @@ public class PlayerCollision : MonoBehaviour
     public SphereCollider topCollider, bottomCollider, frontCollider, backCollider, leftCollider, rightCollider;
     public CharacterController controller;
     Collider[] frontCollision, backCollision, leftCollision, rightCollision, sideCollision, topCollision, bottomCollision, collisions;
+    int layerMask = ~(1 << 9);
     // Start is called before the first frame update
     void Start()
     {
-        Physics.IgnoreCollision(topCollider, frontCollider);
-        Physics.IgnoreCollision(topCollider, backCollider);
-        Physics.IgnoreCollision(topCollider, leftCollider);
-        Physics.IgnoreCollision(topCollider, rightCollider);
-        Physics.IgnoreCollision(frontCollider, backCollider);
-        Physics.IgnoreCollision(frontCollider, leftCollider);
-        Physics.IgnoreCollision(frontCollider, rightCollider);
-        Physics.IgnoreCollision(backCollider, leftCollider);
-        Physics.IgnoreCollision(backCollider, rightCollider);
-        Physics.IgnoreCollision(leftCollider, rightCollider);
     }
 
     // Update is called once per frame
     void Update()
     {
-        frontCollision = Physics.OverlapSphere(frontCollider.transform.position, frontCollider.radius, 1 << 8);
-        backCollision = Physics.OverlapSphere(backCollider.transform.position, backCollider.radius, 1 << 8);
-        leftCollision = Physics.OverlapSphere(leftCollider.transform.position, leftCollider.radius, 1 << 8);
-        rightCollision = Physics.OverlapSphere(rightCollider.transform.position, rightCollider.radius, 1 << 8);
-        topCollision = Physics.OverlapSphere(topCollider.transform.position, topCollider.radius, 1 << 8);
-        bottomCollision = Physics.OverlapSphere(bottomCollider.transform.position, bottomCollider.radius, 1 << 8);
+        frontCollision = Physics.OverlapSphere(frontCollider.transform.position, frontCollider.radius, layerMask);
+        backCollision = Physics.OverlapSphere(backCollider.transform.position, backCollider.radius, layerMask);
+        leftCollision = Physics.OverlapSphere(leftCollider.transform.position, leftCollider.radius, layerMask);
+        rightCollision = Physics.OverlapSphere(rightCollider.transform.position, rightCollider.radius, layerMask);
+        topCollision = Physics.OverlapSphere(topCollider.transform.position, topCollider.radius, layerMask);
+        bottomCollision = Physics.OverlapSphere(bottomCollider.transform.position, bottomCollider.radius, layerMask);
         sideCollision = frontCollision.Concat(backCollision).Concat(leftCollision).Concat(rightCollision).Distinct().ToArray();
         collisions = sideCollision.Concat(topCollision).Concat(bottomCollision).Distinct().ToArray();
     }
