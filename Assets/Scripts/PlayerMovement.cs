@@ -1,19 +1,22 @@
-﻿using UnityEngine;
+﻿using UnityEditor.Animations;
+using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
     public CharacterController controller;
-    public Transform cam;   
+    public Transform cam;
+    public GameObject gfx;
+    public Animator animator;
 
-    public float acceleration = 0.1f, speed = 6f, turnSmooth = 0.05f;
-    private float turnSmoothVelocity, timeSinceLastUse = 0;
+    public float acceleration = 0.1f, speed = 6f, turnSmooth = 0.05f, jumpHeight = 1.0f, sprintIncrease = 1.5f;
+    private float turnSmoothVelocity, timeSinceLastUse = 0, sprintMultiplier = 1f;
     private Vector3 playerVelocity;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        animator = gfx.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -49,7 +52,21 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        Vector3 moveDir = (Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward).normalized * speed * direction.magnitude;
+        if (Input.GetButton("Sprint"))
+        {
+            sprintMultiplier = sprintIncrease;
+            animator.SetBool("Sprint", true);
+        }
+        else
+        {
+            sprintMultiplier = 1f;
+            animator.SetBool("Sprint", false);
+        }
+
+
+        Vector3 moveDir = (Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward).normalized * speed * sprintMultiplier * direction.magnitude;
+        animator.SetFloat("Mag", moveDir.magnitude);
+
         playerVelocity = new Vector3(Mathf.Lerp(playerVelocity.x, moveDir.x, acceleration), playerVelocity.y, Mathf.Lerp(playerVelocity.z, moveDir.z, acceleration));
 
         if (controller.isGrounded)
@@ -59,6 +76,11 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             playerVelocity.y += Physics.gravity.y * Time.deltaTime;
+        }
+
+        if (Input.GetButton("Jump") && controller.isGrounded)
+        {
+            playerVelocity.y = Mathf.Sqrt(jumpHeight * -2.0f * Physics.gravity.y);
         }
 
         controller.Move(playerVelocity * Time.deltaTime);
