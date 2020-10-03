@@ -52,6 +52,15 @@ public class PlayerMovement : MonoBehaviour
         Vector3 moveDir = (Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward).normalized * speed * direction.magnitude;
         playerVelocity = new Vector3(Mathf.Lerp(playerVelocity.x, moveDir.x, acceleration), playerVelocity.y, Mathf.Lerp(playerVelocity.z, moveDir.z, acceleration));
 
+        if (controller.isGrounded)
+        {
+            playerVelocity.y = -1f;
+        }
+        else
+        {
+            playerVelocity.y += Physics.gravity.y * Time.deltaTime;
+        }
+
         controller.Move(playerVelocity * Time.deltaTime);
     }
 }
