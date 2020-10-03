@@ -1,40 +1,17 @@
 fileFormatVersion: 2
-<<<<<<< HEAD
 guid: 227b30e2249cc74418b15fb1821ece81
-=======
-guid: 917e021f9333e104d8d99d8e3a46cfd6
->>>>>>> d96468c636ab8328ca84072c713a6b0150aa1474
 ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable:
   - first:
       74: -203655887218126122
     second: mixamo.com
-<<<<<<< HEAD
   externalObjects: {}
   materials:
     materialImportMode: 1
-    materialName: 0
-    materialSearch: 1
-    materialLocation: 1
-=======
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Ch44_Body
-    second: {fileID: 2100000, guid: 2da0e462afbe42644b3713fb8da84214, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Ch44_body1
-    second: {fileID: 2100000, guid: fd3a93e51ef0a2043b084aa349d68753, type: 2}
-  materials:
-    materialImportMode: 2
-    materialName: 0
+    materialName: 3
     materialSearch: 1
     materialLocation: 0
->>>>>>> d96468c636ab8328ca84072c713a6b0150aa1474
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -49,11 +26,7 @@ ModelImporter:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-<<<<<<< HEAD
     animationCompression: 1
-=======
-    animationCompression: 3
->>>>>>> d96468c636ab8328ca84072c713a6b0150aa1474
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -61,7 +34,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 0
+    isReadable: 1
   meshes:
     lODScreenPercentages: []
     globalScale: 1
@@ -69,11 +42,11 @@ ModelImporter:
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
-    importVisibility: 1
+    importVisibility: 0
     importBlendShapes: 1
-    importCameras: 1
-    importLights: 1
-    fileIdsGeneration: 2
+    importCameras: 0
+    importLights: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
@@ -84,26 +57,26 @@ ModelImporter:
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
     meshOptimizationFlags: -1
-    indexFormat: 0
+    indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
-    useFileScale: 1
+    useFileScale: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
-    tangentImportMode: 3
-    normalCalculationMode: 4
-    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    tangentImportMode: 4
+    normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
-  referencedClips: []
-<<<<<<< HEAD
+  referencedClips:
+  - 32abc2d97ee00d14f8a2d104c84634dd
+  - 4be653b88cdfddb4e9168a7dbe62e9d0
+  - 6d7c7401bd1eb3440bea22e6c1289574
+  - 41f474a1f10a127439e4c288a71ee6da
   importAnimation: 1
-=======
-  importAnimation: 0
->>>>>>> d96468c636ab8328ca84072c713a6b0150aa1474
   humanDescription:
     serializedVersion: 3
     human: []
@@ -116,27 +89,15 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     globalScale: 1
-<<<<<<< HEAD
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 2
+  animationType: 1
   humanoidOversampling: 1
   avatarSetup: 0
-=======
-    rootMotionBoneName: mixamorig:Hips
-    hasTranslationDoF: 0
-    hasExtraRoot: 1
-    skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {instanceID: 0}
-  autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 3
-  humanoidOversampling: 1
-  avatarSetup: 1
->>>>>>> d96468c636ab8328ca84072c713a6b0150aa1474
   additionalBone: 0
   userData: 
   assetBundleName: 
