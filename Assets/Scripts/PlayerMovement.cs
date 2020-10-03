@@ -10,7 +10,9 @@ public class PlayerMovement : MonoBehaviour
     public PlayerCollision collision;
 
     public float acceleration = 0.1f, speed = 6f, turnSmooth = 0.05f, jumpHeight = 1.0f, sprintIncrease = 1.5f;
+    public int jumpCount = 2;
     private float turnSmoothVelocity, timeSinceLastUse = 0, sprintMultiplier = 1f;
+    private int currentJumpCount = 0;
     private Vector3 playerVelocity;
 
 
@@ -73,18 +75,31 @@ public class PlayerMovement : MonoBehaviour
         if (controller.isGrounded)
         {
             playerVelocity.y = -1f;
+            resetJumpCount();
         }
         else
         {
             playerVelocity.y += Physics.gravity.y * Time.deltaTime;
         }
 
-        if (Input.GetButton("Jump") && controller.isGrounded)
+        if (Input.GetButtonDown("Jump") && currentJumpCount < jumpCount)
         {
+            currentJumpCount += 1;
             playerVelocity.y = Mathf.Sqrt(jumpHeight * -2.0f * Physics.gravity.y);
             animator.SetTrigger("Jump");
+
         }
 
         controller.Move(playerVelocity * Time.deltaTime);
+
+        if (collision.getCollisions().Length > 0)
+        {
+            Debug.Log(collision.getCollisions()[0].gameObject.name);
+        }
+    }
+
+    public void resetJumpCount()
+    {
+        currentJumpCount = 0;
     }
 }
