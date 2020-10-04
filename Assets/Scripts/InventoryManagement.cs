@@ -21,19 +21,19 @@ public class InventoryManagement : MonoBehaviour
             if(collisions.getCollisions()[i] != null) {
                 if(collisions.getCollisions()[i].tag == "collectible") {
                     switch(collisions.getCollisions()[i].name) {
-                        case "doubleJump" :
+                        case "gfx_doublejump" :
                             Destroy(GameObject.Find(collisions.getCollisions()[i].name));
                             doubleJump = true;
                         break;
-                        case "dash" :
+                        case "gfx_dash" :
                             Destroy(GameObject.Find(collisions.getCollisions()[i].name));
                             dash = true;
                         break;
-                        case "roll" :
+                        case "gfx_roll" :
                             Destroy(GameObject.Find(collisions.getCollisions()[i].name));
                             roll = true;
                         break;
-                        case "walljump" :
+                        case "gfx_walljump" :
                             Destroy(GameObject.Find(collisions.getCollisions()[i].name));
                             walljump = true;
                         break;
