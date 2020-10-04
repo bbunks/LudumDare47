@@ -12,9 +12,9 @@ public class PlayerMovement : MonoBehaviour
     public float acceleration = 0.1f, speed = 6f, turnSmooth = 0.05f, jumpHeight = 1.0f, sprintIncrease = 1.5f;
     public int jumpCount = 2;
     private float turnSmoothVelocity, timeSinceLastUse = 0, sprintMultiplier = 1f, distanceToGround, dashTimer = 1f;
-    private int currentJumpCount = 0;
+    private int currentJumpCount = 0, currentDashCount = 0;
 
-    private bool canRoll = true, canDash=true, dashActive=false;
+    private bool canRoll = true, canDash = true, dashActive = false;
     private Vector3 playerVelocity, dashTarget;
 
 
@@ -41,22 +41,6 @@ public class PlayerMovement : MonoBehaviour
         Vector3 direction = new Vector3(horizontal, 0, vertical).normalized;
         float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
 
-        if (direction.magnitude > 0.05)
-        {
-            if (timeSinceLastUse > 2)
-            {
-                //Look towards where the player is moving
-                float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmooth);
-                transform.rotation = Quaternion.Euler(0f, angle, 0f);
-            }
-            else
-            {
-                //Look towards where the camera is looking
-                float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, cam.eulerAngles.y, ref turnSmoothVelocity, turnSmooth);
-                transform.rotation = Quaternion.Euler(0f, angle, 0f);
-            }
-        }
-
         //if (Input.GetButton("Sprint"))
         //{
         //    sprintMultiplier = sprintIncrease;
@@ -82,6 +66,7 @@ public class PlayerMovement : MonoBehaviour
         {
             playerVelocity.y = -.2f;
             resetJumpCount();
+            currentDashCount = 0;
             animator.SetBool("isGrounded", true);
         }
         else
@@ -99,7 +84,7 @@ public class PlayerMovement : MonoBehaviour
                 currentJumpCount = 1;
             }
             currentJumpCount += 1;
-            playerVelocity.y = Mathf.Sqrt(jumpHeight * -2.0f * Physics.gravity.y);
+            playerVelocity.y = Mathf.Sqrt(jumpHeight * -2.5f * Physics.gravity.y);
             animator.SetTrigger("Jump");
         }
 
@@ -132,10 +117,11 @@ public class PlayerMovement : MonoBehaviour
         dashTimer += Time.deltaTime;
         if (canDash)
         {
-            if (Input.GetButton("Sprint"))
+            if (Input.GetButtonDown("Sprint") && currentDashCount < 1)
             {
                 dashTimer = 0;
-                dashTarget = transform.position + cam.forward.normalized * 15f * speed;
+                currentDashCount += 1;
+                dashTarget = transform.position + (cam.forward.normalized + new Vector3(0,.1f,0)) * 15f * speed;
                 dashActive = true;
                 animator.SetTrigger("StartDash");
             }
@@ -143,7 +129,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (dashTimer <= .75f)
         {
-            playerVelocity = Vector3.Lerp(transform.position, dashTarget, .2f) - transform.position;
+            playerVelocity = Vector3.Lerp(transform.position, dashTarget, .4f) - transform.position;
         }
 
         if (dashTimer > .75f && dashActive)
@@ -152,6 +138,20 @@ public class PlayerMovement : MonoBehaviour
             playerVelocity.y = -2f;
             animator.SetTrigger("EndDash");
         }
+
+        
+         if (!dashActive)
+         {
+             //Look towards where the player is moving
+             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmooth);
+             transform.rotation = Quaternion.Euler(0f, angle, 0f);
+         }
+         else if (direction.magnitude > 0.05)
+         {
+             //Look towards where the camera is looking
+             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, cam.eulerAngles.y, ref turnSmoothVelocity, turnSmooth);
+             transform.rotation = Quaternion.Euler(0f, angle, 0f);
+         }
 
         animator.SetFloat("yVel", playerVelocity.y);
         controller.Move(playerVelocity * Time.deltaTime);
