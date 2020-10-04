@@ -10,12 +10,13 @@ public class HUDController : MonoBehaviour
 
     public float timer = 60*2;
 
-    public Text timerText;
-    private GameObject doubleJumpIcon, dashIcon, rollIcon, wallJumpIcon;
+    public Component[] childText;
+
+    private GameObject doubleJumpIcon, dashIcon, rollIcon, wallJumpIcon, CollectedText;
     // Start is called before the first frame update
     void Start()
     {
-        timerText = GetComponentInChildren<Text>();
+        childText = GetComponentsInChildren<Text>();
         doubleJumpIcon = GameObject.Find("doublejumpIcon");
         dashIcon = GameObject.Find("dashIcon");
         rollIcon = GameObject.Find("rollIcon");
@@ -25,7 +26,8 @@ public class HUDController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timerText.text = DisplayTime(timer);
+        
+        childText[0].GetComponent<Text>().text = DisplayTime(timer);
         if(timer > 0){
             timer -= Time.deltaTime;
         }
@@ -33,6 +35,10 @@ public class HUDController : MonoBehaviour
         dashIcon.SetActive(inventory.dash);
         rollIcon.SetActive(inventory.roll);
         wallJumpIcon.SetActive(inventory.walljump);
+
+        if(inventory.doubleJump) {
+            childText[1].GetComponent<Text>().text = "You now have the Double Jump. Press the Jump button in mid-air";
+        }
     }
 
     private string DisplayTime(float timeToDisplay)
