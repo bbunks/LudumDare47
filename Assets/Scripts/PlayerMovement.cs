@@ -13,6 +13,8 @@ public class PlayerMovement : MonoBehaviour
     public int jumpCount = 2;
     private float turnSmoothVelocity, timeSinceLastUse = 0, sprintMultiplier = 1f;
     private int currentJumpCount = 0;
+
+    private bool canRoll = true;
     private Vector3 playerVelocity;
 
 
@@ -59,11 +61,15 @@ public class PlayerMovement : MonoBehaviour
         {
             sprintMultiplier = sprintIncrease;
             animator.SetBool("Sprint", true);
+
+            canRoll = false;
         }
         else
         {
             sprintMultiplier = 1f;
             animator.SetBool("Sprint", false);
+
+            canRoll = true;
         }
 
 
@@ -76,30 +82,46 @@ public class PlayerMovement : MonoBehaviour
         {
             playerVelocity.y = -1f;
             resetJumpCount();
+            animator.SetBool("isGrounded", true);
         }
         else
         {
             playerVelocity.y += Physics.gravity.y * Time.deltaTime;
+            animator.SetBool("isGrounded", false);
         }
 
         if (Input.GetButtonDown("Jump") && currentJumpCount < jumpCount)
         {
+            canRoll = false;
+            rollEnded();
             currentJumpCount += 1;
             playerVelocity.y = Mathf.Sqrt(jumpHeight * -2.0f * Physics.gravity.y);
             animator.SetTrigger("Jump");
 
         }
 
-        controller.Move(playerVelocity * Time.deltaTime);
-
-        if (collision.getCollisions().Length > 0)
-        {
-            Debug.Log(collision.getCollisions()[0].gameObject.name);
+        if(canRoll && controller.isGrounded) {
+            if (Input.GetButton("Roll")) {
+                collision.topCollider.transform.localPosition = new Vector3(0, 0.25f, 0);
+                controller.height = 1;
+                controller.center = new Vector3(0, -0.5f, 0);
+            } else {
+                rollEnded();
+            }
         }
+
+        animator.SetFloat("yVel", playerVelocity.y);
+        controller.Move(playerVelocity * Time.deltaTime);
     }
 
     public void resetJumpCount()
     {
         currentJumpCount = 0;
+    }
+
+    public void rollEnded() {
+        collision.topCollider.transform.localPosition = new Vector3(0, 0.9f, 0);
+        controller.height = 2;
+        controller.center = new Vector3(0, 0, 0);
     }
 }
