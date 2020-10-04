@@ -8,7 +8,7 @@ public class HUDController : MonoBehaviour
     public Canvas hud;
     public InventoryManagement inventory;
 
-    public float timer = 60*2;
+    public float timer = 40;
 
     public Component[] childText;
 
