@@ -6,14 +6,20 @@ using UnityEngine.UI;
 public class HUDController : MonoBehaviour
 {
     public Canvas hud;
+    public InventoryManagement inventory;
 
-    private float timer = 60*2;
+    public float timer = 60*2;
 
     public Text timerText;
+    private GameObject doubleJumpIcon, dashIcon, rollIcon, wallJumpIcon;
     // Start is called before the first frame update
     void Start()
     {
-        timerText = GetComponent<Text>();
+        timerText = GetComponentInChildren<Text>();
+        doubleJumpIcon = GameObject.Find("Double Jump Icon");
+        dashIcon = GameObject.Find("Dash Icon");
+        rollIcon = GameObject.Find("Roll Icon");
+        wallJumpIcon = GameObject.Find("Wall Jump Icon");
     }
 
     // Update is called once per frame
@@ -23,6 +29,10 @@ public class HUDController : MonoBehaviour
         if(timer > 0){
             timer -= Time.deltaTime;
         }
+        doubleJumpIcon.SetActive(inventory.doubleJump);
+        dashIcon.SetActive(inventory.dash);
+        rollIcon.SetActive(inventory.roll);
+        wallJumpIcon.SetActive(inventory.walljump);
     }
 
     private string DisplayTime(float timeToDisplay)

@@ -5,7 +5,7 @@ using UnityEngine;
 public class InventoryManagement : MonoBehaviour
 {
     public PlayerCollision collisions;
-    public bool dash = false, roll = false, walljump = false;
+    public bool doubleJump = false, dash = false, roll = false, walljump = false;
 
     
     // Start is called before the first frame update
@@ -21,6 +21,11 @@ public class InventoryManagement : MonoBehaviour
             if(collisions.getCollisions()[i] != null) {
                 if(collisions.getCollisions()[i].tag == "collectible") {
                     switch(collisions.getCollisions()[i].name) {
+                        case "doubleJump" :
+                            Debug.Log("Collected Dash");
+                            Destroy(GameObject.Find(collisions.getCollisions()[i].name));
+                            doubleJump = true;
+                        break;
                         case "dash" :
                             Debug.Log("Collected Dash");
                             Destroy(GameObject.Find(collisions.getCollisions()[i].name));
