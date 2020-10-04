@@ -8,10 +8,11 @@ public class PlayerMovement : MonoBehaviour
     public GameObject gfx;
     public Animator animator;
     public PlayerCollision collision;
+    public InventoryManagement inv;
 
     public float acceleration = 0.1f, speed = 6f, turnSmooth = 0.05f, jumpHeight = 1.0f, sprintIncrease = 1.5f;
-    public int jumpCount = 2;
-    private float turnSmoothVelocity, timeSinceLastUse = 0, sprintMultiplier = 1f, distanceToGround, dashTimer = 1f;
+    public int jumpCount = 1;
+    private float turnSmoothVelocity, timeSinceLastUse = 0, sprintMultiplier = 1f, distanceToGround, dashTimer = 1f, rollTimer = 1f;
     private int currentJumpCount = 0, currentDashCount = 0;
 
     private bool canRoll = true, canDash = true, dashActive = false;
@@ -27,6 +28,11 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (inv.doubleJump)
+        {
+            jumpCount = 2;
+        }
+
         if (Input.GetButton("Fire1"))
         {
             timeSinceLastUse = 0f;
@@ -67,6 +73,7 @@ public class PlayerMovement : MonoBehaviour
             playerVelocity.y = -.2f;
             resetJumpCount();
             currentDashCount = 0;
+            canRoll = true;
             animator.SetBool("isGrounded", true);
         }
         else
@@ -88,31 +95,18 @@ public class PlayerMovement : MonoBehaviour
             animator.SetTrigger("Jump");
         }
 
-        if (canRoll && controller.isGrounded)
+        rollTimer += Time.deltaTime;
+        if (canRoll && controller.isGrounded && inv.roll)
         {
             if (Input.GetButton("Roll"))
             {
-                collision.topCollider.transform.localPosition = new Vector3(0, 0.25f, 0);
-                controller.height = 1;
-                controller.center = new Vector3(0, -0.5f, 0);
-            }
-            else
-            {
-                rollEnded();
-            }
-        }
-
-
-        if (canRoll && controller.isGrounded)
-        {
-            if (Input.GetButton("Roll"))
-            {
+                rollTimer = 0;
                 collision.topCollider.transform.localPosition = new Vector3(0, 0.25f, 0);
                 controller.height = 1;
                 controller.center = new Vector3(0, -0.5f, 0);
                 animator.SetBool("Roll", true);
             }
-            else
+            else if (rollTimer > .75f)
             {
                 rollEnded();
             }
@@ -121,7 +115,7 @@ public class PlayerMovement : MonoBehaviour
         dashTimer += Time.deltaTime;
         if (canDash)
         {
-            if (Input.GetButtonDown("Sprint") && currentDashCount < 1)
+            if (Input.GetButtonDown("Sprint") && currentDashCount < 1 && inv.dash)
             {
                 dashTimer = 0;
                 currentDashCount += 1;
