@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
 
     public float acceleration = 0.1f, speed = 6f, turnSmooth = 0.05f, jumpHeight = 1.0f, sprintIncrease = 1.5f;
     public int jumpCount = 2;
-    private float turnSmoothVelocity, timeSinceLastUse = 0, sprintMultiplier = 1f;
+    private float turnSmoothVelocity, timeSinceLastUse = 0, sprintMultiplier = 1f, distanceToGround;
     private int currentJumpCount = 0;
 
     private bool canRoll = true;
@@ -40,7 +40,7 @@ public class PlayerMovement : MonoBehaviour
         float vertical = Input.GetAxisRaw("Vertical");
         Vector3 direction = new Vector3(horizontal, 0, vertical).normalized;
         float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
-        
+
         if (direction.magnitude > 0.05)
         {
             if (timeSinceLastUse > 2)
@@ -80,7 +80,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (controller.isGrounded)
         {
-            playerVelocity.y = -1f;
+            playerVelocity.y = -.2f;
             resetJumpCount();
             animator.SetBool("isGrounded", true);
         }
@@ -109,8 +109,32 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
+
+        if (canRoll && controller.isGrounded)
+        {
+            if (Input.GetButton("Roll"))
+            {
+                collision.topCollider.transform.localPosition = new Vector3(0, 0.25f, 0);
+                controller.height = 1;
+                controller.center = new Vector3(0, -0.5f, 0);
+                animator.SetBool("Roll",true);
+            }
+            else
+            {
+                rollEnded();
+            }
+        }
+
         animator.SetFloat("yVel", playerVelocity.y);
         controller.Move(playerVelocity * Time.deltaTime);
+
+
+        RaycastHit hit;
+        if (Physics.SphereCast(transform.position, 0.4f, -Vector3.up, out hit, Mathf.Infinity, ~(1 << 9)))
+        {
+            distanceToGround = hit.distance;
+            animator.SetFloat("distanceToGround", distanceToGround);
+        }
     }
 
     public void resetJumpCount()
@@ -118,9 +142,12 @@ public class PlayerMovement : MonoBehaviour
         currentJumpCount = 0;
     }
 
-    public void rollEnded() {
+
+    public void rollEnded()
+    {
+        animator.SetBool("Roll", false);
         collision.topCollider.transform.localPosition = new Vector3(0, 0.9f, 0);
-        controller.height = 2;
+        controller.height = 1.8f;
         controller.center = new Vector3(0, 0, 0);
     }
 }
