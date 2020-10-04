@@ -16,10 +16,10 @@ public class HUDController : MonoBehaviour
     void Start()
     {
         timerText = GetComponentInChildren<Text>();
-        doubleJumpIcon = GameObject.Find("Double Jump Icon");
-        dashIcon = GameObject.Find("Dash Icon");
-        rollIcon = GameObject.Find("Roll Icon");
-        wallJumpIcon = GameObject.Find("Wall Jump Icon");
+        doubleJumpIcon = GameObject.Find("gfx_doublejump");
+        dashIcon = GameObject.Find("gfx_dash");
+        rollIcon = GameObject.Find("gfx_roll");
+        wallJumpIcon = GameObject.Find("gfx_walljump");
     }
 
     // Update is called once per frame
