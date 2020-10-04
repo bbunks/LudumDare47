@@ -97,7 +97,6 @@ public class PlayerMovement : MonoBehaviour
             currentJumpCount += 1;
             playerVelocity.y = Mathf.Sqrt(jumpHeight * -2.0f * Physics.gravity.y);
             animator.SetTrigger("Jump");
-
         }
 
         if(canRoll && controller.isGrounded) {
