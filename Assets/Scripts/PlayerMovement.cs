@@ -97,8 +97,18 @@ public class PlayerMovement : MonoBehaviour
             currentJumpCount += 1;
             playerVelocity.y = Mathf.Sqrt(jumpHeight * -2.0f * Physics.gravity.y);
             animator.SetTrigger("Jump");
-
         }
+
+        if(canRoll && controller.isGrounded) {
+            if (Input.GetButton("Roll")) {
+                collision.topCollider.transform.localPosition = new Vector3(0, 0.25f, 0);
+                controller.height = 1;
+                controller.center = new Vector3(0, -0.5f, 0);
+            } else {
+                rollEnded();
+            }
+        }
+
 
         if (canRoll && controller.isGrounded)
         {
@@ -131,6 +141,7 @@ public class PlayerMovement : MonoBehaviour
     {
         currentJumpCount = 0;
     }
+
 
     public void rollEnded()
     {
