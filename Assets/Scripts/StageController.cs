@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class StageController : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class StageController : MonoBehaviour
     void Update()
     {
         if(HUD.isTimeUp()) {
-            Debug.Log("Timer is up bro!");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 }
