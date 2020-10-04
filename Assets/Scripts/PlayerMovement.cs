@@ -93,6 +93,8 @@ public class PlayerMovement : MonoBehaviour
             currentJumpCount += 1;
             playerVelocity.y = Mathf.Sqrt(jumpHeight * -2.5f * Physics.gravity.y);
             animator.SetTrigger("Jump");
+        } else {
+            canRoll = true;
         }
 
         rollTimer += Time.deltaTime;
