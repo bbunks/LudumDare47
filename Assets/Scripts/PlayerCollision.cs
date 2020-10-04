@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,6 +7,7 @@ public class PlayerCollision : MonoBehaviour
 {
     public SphereCollider topCollider, bottomCollider, frontCollider, backCollider, leftCollider, rightCollider;
     public CharacterController controller;
+    public SkinnedMeshRenderer mesh;
     Collider[] frontCollision, backCollision, leftCollision, rightCollision, sideCollision, topCollision, bottomCollision, collisions;
     int layerMask = ~(1 << 9);
     // Start is called before the first frame update
@@ -25,6 +26,17 @@ public class PlayerCollision : MonoBehaviour
         bottomCollision = Physics.OverlapSphere(bottomCollider.transform.position, bottomCollider.radius, layerMask);
         sideCollision = frontCollision.Concat(backCollision).Concat(leftCollision).Concat(rightCollision).Distinct().ToArray();
         collisions = sideCollision.Concat(topCollision).Concat(bottomCollision).Distinct().ToArray();
+
+        bool collidingWithCamera = false;
+        foreach (Collider collider in collisions)
+        {
+            if (collider.name == "Camera HitBox")
+            {
+                collidingWithCamera = true;
+            }
+        }
+
+        mesh.enabled = !collidingWithCamera;
     }
 
     public Collider[] getFrontCollisions()

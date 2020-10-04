@@ -11,11 +11,11 @@ public class PlayerMovement : MonoBehaviour
 
     public float acceleration = 0.1f, speed = 6f, turnSmooth = 0.05f, jumpHeight = 1.0f, sprintIncrease = 1.5f;
     public int jumpCount = 2;
-    private float turnSmoothVelocity, timeSinceLastUse = 0, sprintMultiplier = 1f, distanceToGround;
+    private float turnSmoothVelocity, timeSinceLastUse = 0, sprintMultiplier = 1f, distanceToGround, dashTimer = 1f;
     private int currentJumpCount = 0;
 
-    private bool canRoll = true;
-    private Vector3 playerVelocity;
+    private bool canRoll = true, canDash=true, dashActive=false;
+    private Vector3 playerVelocity, dashTarget;
 
 
     // Start is called before the first frame update
@@ -57,20 +57,20 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        if (Input.GetButton("Sprint"))
-        {
-            sprintMultiplier = sprintIncrease;
-            animator.SetBool("Sprint", true);
-
-            canRoll = false;
-        }
-        else
-        {
-            sprintMultiplier = 1f;
-            animator.SetBool("Sprint", false);
-
-            canRoll = true;
-        }
+        //if (Input.GetButton("Sprint"))
+        //{
+        //    sprintMultiplier = sprintIncrease;
+        //    animator.SetBool("Sprint", true);
+        //
+        //    canRoll = false;
+        //}
+        //else
+        //{
+        //    sprintMultiplier = 1f;
+        //    animator.SetBool("Sprint", false);
+        //
+        //    canRoll = true;
+        //}
 
 
         Vector3 moveDir = (Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward).normalized * speed * sprintMultiplier * direction.magnitude;
@@ -90,10 +90,14 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("isGrounded", false);
         }
 
-        if (Input.GetButtonDown("Jump") && currentJumpCount < jumpCount)
+        if (Input.GetButtonDown("Jump") && currentJumpCount < jumpCount && !dashActive)
         {
             canRoll = false;
             rollEnded();
+            if (!controller.isGrounded && currentJumpCount == 0)
+            {
+                currentJumpCount = 1;
+            }
             currentJumpCount += 1;
             playerVelocity.y = Mathf.Sqrt(jumpHeight * -2.0f * Physics.gravity.y);
             animator.SetTrigger("Jump");
@@ -123,6 +127,30 @@ public class PlayerMovement : MonoBehaviour
             {
                 rollEnded();
             }
+        }
+
+        dashTimer += Time.deltaTime;
+        if (canDash)
+        {
+            if (Input.GetButton("Sprint"))
+            {
+                dashTimer = 0;
+                dashTarget = transform.position + cam.forward.normalized * 15f * speed;
+                dashActive = true;
+                animator.SetTrigger("StartDash");
+            }
+        }
+
+        if (dashTimer <= .75f)
+        {
+            playerVelocity = Vector3.Lerp(transform.position, dashTarget, .2f) - transform.position;
+        }
+
+        if (dashTimer > .75f && dashActive)
+        {
+            dashActive = false;
+            playerVelocity.y = -2f;
+            animator.SetTrigger("EndDash");
         }
 
         animator.SetFloat("yVel", playerVelocity.y);
