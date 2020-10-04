@@ -22,22 +22,18 @@ public class InventoryManagement : MonoBehaviour
                 if(collisions.getCollisions()[i].tag == "collectible") {
                     switch(collisions.getCollisions()[i].name) {
                         case "doubleJump" :
-                            Debug.Log("Collected Dash");
                             Destroy(GameObject.Find(collisions.getCollisions()[i].name));
                             doubleJump = true;
                         break;
                         case "dash" :
-                            Debug.Log("Collected Dash");
                             Destroy(GameObject.Find(collisions.getCollisions()[i].name));
                             dash = true;
                         break;
                         case "roll" :
-                            Debug.Log("Collected Dash");
                             Destroy(GameObject.Find(collisions.getCollisions()[i].name));
                             roll = true;
                         break;
                         case "walljump" :
-                            Debug.Log("Collected Dash");
                             Destroy(GameObject.Find(collisions.getCollisions()[i].name));
                             walljump = true;
                         break;
