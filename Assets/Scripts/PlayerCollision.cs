@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerCollision : MonoBehaviour
 {
@@ -33,6 +34,17 @@ public class PlayerCollision : MonoBehaviour
             if (collider.name == "Camera HitBox")
             {
                 collidingWithCamera = true;
+            }
+        }
+
+        for (int i = 0; i < collisions.Length; i++)
+        {
+            if (collisions[i] != null)
+            {
+                if (collisions[i].tag == "Laser" || collisions[i].name == "Abyss")
+                {
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                }
             }
         }
 

@@ -1,5 +1,4 @@
-﻿using UnityEditor.Animations;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -8,7 +7,6 @@ public class PlayerMovement : MonoBehaviour
     public GameObject gfx;
     public Animator animator;
     public PlayerCollision collision;
-    public InventoryManagement inv;
 
     public float acceleration = 0.1f, speed = 6f, turnSmooth = 0.05f, jumpHeight = 1.0f, sprintIncrease = 1.5f;
     public int jumpCount = 1;
@@ -28,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (inv.doubleJump)
+        if (StageController.Instance.doubleJump)
         {
             jumpCount = 2;
         }
@@ -98,7 +96,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         rollTimer += Time.deltaTime;
-        if (canRoll && controller.isGrounded && inv.roll)
+        if (canRoll && controller.isGrounded && StageController.Instance.roll)
         {
             if (Input.GetButton("Roll"))
             {
@@ -117,7 +115,7 @@ public class PlayerMovement : MonoBehaviour
         dashTimer += Time.deltaTime;
         if (canDash)
         {
-            if (Input.GetButtonDown("Sprint") && currentDashCount < 1 && inv.dash)
+            if (Input.GetButtonDown("Sprint") && currentDashCount < 1 && StageController.Instance.dash)
             {
                 dashTimer = 0;
                 currentDashCount += 1;

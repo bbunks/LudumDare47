@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class HUDController : MonoBehaviour
 {
     public Canvas hud;
-    public InventoryManagement inventory;
 
     public float timer = 40;
 
@@ -31,10 +30,10 @@ public class HUDController : MonoBehaviour
         if(timer > 0){
             timer -= Time.deltaTime;
         }
-        doubleJumpIcon.SetActive(inventory.doubleJump);
-        dashIcon.SetActive(inventory.dash);
-        rollIcon.SetActive(inventory.roll);
-        wallJumpIcon.SetActive(inventory.walljump);
+        doubleJumpIcon.SetActive(StageController.Instance.doubleJump);
+        dashIcon.SetActive(StageController.Instance.dash);
+        rollIcon.SetActive(StageController.Instance.roll);
+        wallJumpIcon.SetActive(StageController.Instance.walljump);
 
     }
 
