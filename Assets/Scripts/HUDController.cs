@@ -36,9 +36,6 @@ public class HUDController : MonoBehaviour
         rollIcon.SetActive(inventory.roll);
         wallJumpIcon.SetActive(inventory.walljump);
 
-        if(inventory.doubleJump) {
-            childText[1].GetComponent<Text>().text = "You now have the Double Jump. Press the Jump button in mid-air";
-        }
     }
 
     private string DisplayTime(float timeToDisplay)
